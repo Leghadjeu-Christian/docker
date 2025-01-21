@@ -15,19 +15,36 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Docker Image
+       - name: Checking out repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
         uses: docker/build-push-action@v4
         with:
+          file: test/Dockerfile
           push: false
-          tags: ${{ github.repository }}:latest
+          tags: ${{ env.IMAGE }}:${{ env.TAG }}
+          context: test/
 
-      - name: Verify Docker Image
-        run: docker images
-      - name: verify node version
-        run: node --version
+      - name: Before
+        run: docker image ls "${{ env.IMAGE }}"
 
-      - name: Slim the Docker Image
-        uses: slimtoolkit/slim@v1
+      - name: docker-slim
+        uses: kitabisa/docker-slim-action@master
+        id: slim
+        env:
+          DSLIM_HTTP_PROBE: false
+        with:
+          target: ${{ env.IMAGE }}:${{ env.TAG }}
+          overwrite: ${{ matrix.overwrite }}
+
+      - name: After
+        run: docker image ls "${{ env.IMAGE }}"
+
+      - name: Report
+        env:
+          REPORT: ${{ steps.slim.outputs.report }} # report is JSON format
+        run: echo "${REPORT}"
         env:
           DSLIM_LOG_LEVEL: debug
           DSLIM_HTTP_PROBE: false
