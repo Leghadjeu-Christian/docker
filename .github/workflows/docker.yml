@@ -17,18 +17,15 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           
             # Build the Docker image first
-      - uses: docker/build-push-action@v4
-        with:
-          push: false
-          tags: ${{ github.repository }}:latest
-
-      # Slim it!
+          # Slim it!
       - uses: kitabisa/docker-slim-action@v1
+        id: slim
         env:
-          DSLIM_HTTP_PROBE: true
+          DSLIM_HTTP_PROBE: false
         with:
           target: ${{ github.repository }}:latest
-          tag: "slim"
 
-      # Push to the registry
-      - run: docker image push "${{ github.repository }}" --all-tags
+      # Dump the report
+      - run: echo "${REPORT}"
+        env:
+          REPORT: ${{ steps.slim.outputs.report }}
