@@ -23,7 +23,7 @@ jobs:
           tags: ${{ github.repository }}:latest
 
       # Slim it!
-      - uses: kitabisa/docker-slim-action@v1.2.0
+      - uses: kitabisa/docker-slim-action@v1
         env:
           DSLIM_HTTP_PROBE: false
         with:
