@@ -27,7 +27,7 @@ jobs:
         run: node --version
 
       - name: Slim the Docker Image
-        uses: kitabisa/docker-slim-action@v1
+        uses: slimtoolkit/slim@v1
         env:
           DSLIM_LOG_LEVEL: debug
           DSLIM_HTTP_PROBE: false
