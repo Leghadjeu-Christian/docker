@@ -15,17 +15,18 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
-           # Build the Docker image first
+
+            # Build the Docker image first
       - uses: docker/build-push-action@v4
         with:
           push: false
           tags: ${{ github.repository }}:latest
-
+      - run: docker images 
       # Slim it!
       - uses: kitabisa/docker-slim-action@v1
         env:
           DSLIM_HTTP_PROBE: false
+          DSLIM_LOG_LEVEL: debug
         with:
           target: ${{ github.repository }}:latest
           tag: "slim"
