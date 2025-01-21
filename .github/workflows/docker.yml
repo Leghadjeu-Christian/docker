@@ -23,7 +23,11 @@ jobs:
           tags: ${{ github.repository }}:latest
 
       # Slim it!
-      - uses: kitabisa/docker-slim-action@v1
+      - name: Download Docker Slim tool
+      - run: curl -L -o ds.tar.gz https://github.com/slimtoolkit/slim/releases/download/1.40.11/dist_linux.tar.gz
+      - run: tar -xvf ds.tar.gz
+      - run: chmod +x dist_linux/docker-slim
+      - run: ./dist_linux/docker-slim build --tag ghcr.io/${{ github.repository_owner }}/my-image:slim # Step 5: tag the slimed image
         env:
           DSLIM_HTTP_PROBE: false
         with:
