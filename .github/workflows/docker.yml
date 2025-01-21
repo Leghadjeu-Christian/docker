@@ -1,19 +1,32 @@
-name: ci
+name: docker-slim test
 
 on:
   push:
-    branches: main
+    branches:
+      - 'master'
+      - '*dev'
+    paths:
+      - 'dist/*.js'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'dist/*.js'
+  workflow_dispatch:
+
+env:
+  IMAGE: "kitabisa/debian"
+  TAG: "jessie"
 
 jobs:
-  slim:
+  docker-slim:
+    strategy:
+      matrix:
+        overwrite: [true, false]
     runs-on: ubuntu-latest
     steps:
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checking out repository
+        uses: actions/checkout@v3
 
       - name: Build Docker image
         uses: docker/build-push-action@v4
@@ -42,12 +55,3 @@ jobs:
         env:
           REPORT: ${{ steps.slim.outputs.report }} # report is JSON format
         run: echo "${REPORT}"
-        env:
-          DSLIM_LOG_LEVEL: debug
-          DSLIM_HTTP_PROBE: false
-        with:
-          target: ${{ github.repository }}:latest
-          tag: "slim"
-
-      - name: Push Slimmed Docker Image
-        run: docker image push "${{ github.repository }}:slim"
