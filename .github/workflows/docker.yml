@@ -14,7 +14,7 @@ jobs:
         name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: Leghadjeu-Christian
+          username: leghadjeu-christian
           password: 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
       -
         name: Set up QEMU
