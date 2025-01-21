@@ -5,31 +5,33 @@ on:
     branches: main
 
 jobs:
-  login:
+  slim:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-            # Build the Docker image first
-      - uses: docker/build-push-action@v4
+      - name: Build Docker Image
+        uses: docker/build-push-action@v4
         with:
           push: false
           tags: ${{ github.repository }}:latest
-      - run: docker images 
-      # Slim it!
-      - uses: kitabisa/docker-slim-action@v1
+
+      - name: Verify Docker Image
+        run: docker images
+
+      - name: Slim the Docker Image
+        uses: kitabisa/docker-slim-action@v1
         env:
-          DSLIM_HTTP_PROBE: false
           DSLIM_LOG_LEVEL: debug
+          DSLIM_HTTP_PROBE: false
         with:
           target: ${{ github.repository }}:latest
           tag: "slim"
 
-      # Push to the registry
-      - run: docker image push "${{ github.repository }}" --all-tags
+      - name: Push Slimmed Docker Image
+        run: docker image push "${{ github.repository }}:slim"
