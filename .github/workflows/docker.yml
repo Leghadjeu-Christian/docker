@@ -1,57 +1,35 @@
-name: docker-slim test
+name: ci
 
 on:
   push:
-    branches:
-      - 'main'
-      - '*dev'
-    paths:
-      - 'dist/*.js'
-  pull_request:
-    branches:
-      - '**'
-    paths:
-      - 'dist/*.js'
-  workflow_dispatch:
-
-env:
-  IMAGE: "kitabisa/debian"
-  TAG: "jessie"
+    branches: main
 
 jobs:
-  docker-slim:
-    strategy:
-      matrix:
-        overwrite: [true, false]
+  login:
     runs-on: ubuntu-latest
     steps:
-      - name: Checking out repository
-        uses: actions/checkout@v3
-
-      - name: Build Docker image
-        uses: docker/build-push-action@v4
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          file: test/Dockerfile
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+            # Build the Docker image first
+      - uses: docker/build-push-action@v4
+        with:
           push: false
-          tags: ${{ env.IMAGE }}:${{ env.TAG }}
-          context: test/
-
-      - name: Before
-        run: docker image ls "${{ env.IMAGE }}"
-
-      - name: docker-slim
-        uses: kitabisa/docker-slim-action@master
-        id: slim
+          tags: ${{ github.repository }}:latest
+      - run: docker images 
+      # Slim it!
+      - uses: kitabisa/docker-slim-action@master
         env:
           DSLIM_HTTP_PROBE: false
+          DSLIM_LOG_LEVEL: debug
         with:
-          target: ${{ env.IMAGE }}:${{ env.TAG }}
-          overwrite: ${{ matrix.overwrite }}
+          target: ${{ github.repository }}:latest
+          tag: "slim"
 
-      - name: After
-        run: docker image ls "${{ env.IMAGE }}"
-
-      - name: Report
-        env:
-          REPORT: ${{ steps.slim.outputs.report }} # report is JSON format
-        run: echo "${REPORT}"
+      # Push to the registry
+      - run: docker image push "${{ github.repository }}" --all-tags
