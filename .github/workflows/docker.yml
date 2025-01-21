@@ -25,7 +25,7 @@ jobs:
       # Slim it!
       - uses: kitabisa/docker-slim-action@v1
         env:
-          DSLIM_HTTP_PROBE: false
+          DSLIM_HTTP_PROBE: true
         with:
           target: ${{ github.repository }}:latest
           tag: "slim"
