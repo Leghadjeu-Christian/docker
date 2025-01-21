@@ -1,0 +1,26 @@
+# Project information
+site_name: My MkDocs Project
+site_description: 'An example MkDocs project using the Material theme'
+site_url: 'https://Leghadjeu-Christian.github.io/mk-docs'  # Change this to your site's URL
+
+# Theme settings
+theme:
+  name: bootstrap
+
+# Navbar settings (site structure)
+nav:
+  - Home: index.md
+  - About: about.md
+  - multipass: multipass.md
+  
+# Extra settings
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
+
+# Repository configuration (for the edit link on pages)
+repo_name: Leghadjeu-Christian/mk-docs
+repo_url: https://github.com/Leghadjeu-Christian/mk-docs
+edit_uri: edit/master/docs/
