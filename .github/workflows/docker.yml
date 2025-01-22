@@ -25,7 +25,7 @@ jobs:
           push: false
           tags: ${{ github.repository }}/docker/mkdocs:latest
      
-      - name: docker images
+     
       - run: docker images 
 
       # Slim it!
