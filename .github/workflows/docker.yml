@@ -24,6 +24,9 @@ jobs:
         with:
           push: false
           tags: ${{ github.repository }}/docker:latest
+     
+      - name: docker images
+      - run: docker images 
 
       # Slim it!
      # - uses: kitabisa/docker-slim-action@v1
