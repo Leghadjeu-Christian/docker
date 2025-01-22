@@ -36,6 +36,8 @@ jobs:
         with:
           target: ghcr.io/leghadjeu-christian/mkdocs:latest
           tag: "slim"
+          
+      - run: docker images 
 
       # Push to the registry
       - run: docker image push "ghcr.io/leghadjeu-christian/mkdocs" --all-tags          
