@@ -13,8 +13,8 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ ACTOR }}
-          password: ${{ TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
           
       # Build the Docker image first
       - uses: docker/build-push-action@v4
