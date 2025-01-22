@@ -18,16 +18,16 @@ jobs:
       # Build the Docker image first
       - uses: docker/build-push-action@v4
         with:
-          push: false
+          push: true
           tags: ${{ github.repository }}:latest
 
       # Slim it!
-      - uses: kitabisa/docker-slim-action@v1
-        env:
-          DSLIM_HTTP_PROBE: false
-        with:
-          target: ${{ github.repository }}:latest
-          tag: "slim"
+     # - uses: kitabisa/docker-slim-action@v1
+      #  env:
+       #   DSLIM_HTTP_PROBE: false
+        #with:
+         # target: ${{ github.repository }}:latest
+          #tag: "slim"
 
       # Push to the registry
-      - run: docker image push "${{ github.repository }}" --all-tags          
+    #  - run: docker image push "${{ github.repository }}" --all-tags          
