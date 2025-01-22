@@ -28,13 +28,13 @@ jobs:
      
       - run: docker images 
 
-      # Slim it!
-     # - uses: kitabisa/docker-slim-action@v1
-      #  env:
-       #   DSLIM_HTTP_PROBE: false
-        #with:
-         # target: ${{ github.repository }}:latest
-          #tag: "slim"
+       Slim it!
+      - uses: kitabisa/docker-slim-action@v1
+        env:
+          DSLIM_HTTP_PROBE: false
+        with:
+          target: ghcr.io/leghadjeu-christian/mkdocs:latest
+          tag: "slim"
 
       # Push to the registry
       - run: docker image push "ghcr.io/leghadjeu-christian/mkdocs" --all-tags          
