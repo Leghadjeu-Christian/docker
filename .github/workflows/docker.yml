@@ -23,7 +23,7 @@ jobs:
       - uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ github.repository }}:latest
+          tags: ${{ github.repository }}/mkdocs:latest
 
       # Slim it!
      # - uses: kitabisa/docker-slim-action@v1
