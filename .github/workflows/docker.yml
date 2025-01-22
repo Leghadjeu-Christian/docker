@@ -34,7 +34,7 @@ jobs:
         env:
           DSLIM_HTTP_PROBE: false
         with:
-          target: ghcr.io/leghadjeu-christian/mkdocs:latest
+          target: ghcr.io/leghadjeu-christian/mkdocs
           tag: "slim"
           
       - run: docker images 
