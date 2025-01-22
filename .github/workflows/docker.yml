@@ -34,4 +34,4 @@ jobs:
           #tag: "slim"
 
       # Push to the registry
-      # - run: docker image push "${{ github.repository }}" --all-tags          
+      - run: docker image push "${{ github.repository }}" --all-tags          
