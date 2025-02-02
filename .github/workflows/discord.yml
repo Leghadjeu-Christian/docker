@@ -1,0 +1,17 @@
+name: c
+
+on:
+  push:
+    branches: main
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+
+    
+      - name: Discord notification
+        uses: cl8dep/action-discord@v0
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: 'Hello World'
